@@ -1,0 +1,15 @@
+.services-list-section {
+  padding-bottom: clamp(80px, 12vh, 160px);
+}
+
+.service-list__item[href] {
+  cursor: none;
+}
+
+/* Shrink the hero on short laptop viewports so all 4 services are
+   visible without scrolling on first load. */
+@media (max-height: 800px) {
+  .page-hero {
+    padding: clamp(70px, 12vh, 110px) var(--side-padding) clamp(16px, 2vh, 24px);
+  }
+}

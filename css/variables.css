@@ -1,0 +1,37 @@
+:root {
+  /* Colors */
+  --bg:           #0E0E0E;
+  --bg-section:   #111111;
+  --bg-card:      #1A1A1A;
+  --white:        #FFFFFF;
+  --light:        #CCCCCC;
+  --muted:        #888888;
+  --amber:        #E8943A;
+  --divider:      #2A2A2A;
+
+  /* Fonts */
+  --font-display:  'Barlow Condensed', sans-serif;
+  --font-heading:  'Playfair Display', serif;
+  --font-body:     'Plus Jakarta Sans', sans-serif;
+
+  /* Sizes */
+  --size-display:  clamp(64px, 11vw, 160px);
+  --size-hero:     clamp(48px, 7vw, 96px);
+  --size-h2:       clamp(36px, 5vw, 72px);
+  --size-h3:       clamp(24px, 3vw, 42px);
+  --size-body:     clamp(15px, 1.2vw, 18px);
+  --size-label:    11px;
+
+  /* Line heights */
+  --leading-tight:  0.92;
+  --leading-normal: 1.05;
+  --leading-body:   1.75;
+
+  /* Tracking */
+  --tracking-tight: -0.02em;
+  --tracking-label: 0.15em;
+
+  /* Spacing */
+  --section-padding: clamp(80px, 12vh, 160px);
+  --side-padding:     clamp(24px, 6vw, 120px);
+}

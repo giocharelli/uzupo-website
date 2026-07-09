@@ -1,0 +1,27 @@
+.page-hero {
+  padding: clamp(160px, 20vh, 220px) var(--side-padding) clamp(60px, 8vh, 100px);
+}
+.page-hero__label {
+  margin-bottom: 24px;
+}
+.page-hero__title {
+  max-width: 900px;
+}
+
+.story-heading {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 64px);
+  text-transform: uppercase;
+  line-height: var(--leading-tight);
+  color: var(--white);
+  max-width: 900px;
+  margin-bottom: 32px;
+}
+.story-body {
+  max-width: 700px;
+}
+.story-body p + p {
+  margin-top: 20px;
+}
+
