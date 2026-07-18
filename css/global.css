@@ -611,6 +611,9 @@ body.is-loading {
   color: var(--white);
   text-shadow: 0 2px 16px rgba(0,0,0,0.7);
 }
+.ig-slider__caption-group--big .ig-slider__caption-title {
+  font-size: clamp(28px, 5vw, 64px);
+}
 .ig-slider__caption-subtitle {
   margin-top: 6px;
   font-family: var(--font-body);

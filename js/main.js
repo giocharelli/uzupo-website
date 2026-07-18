@@ -250,6 +250,21 @@
     });
   }
 
+  /* ============ SEAMLESS LOOP VIDEO ============ */
+  /* Native `loop` restarts at the file's exact first frame, which shows a
+     visible black flash on sources with a black head frame or a keyframe
+     that isn't at time 0. Restarting a fraction of a second early — and a
+     fraction past 0 — skips over both problems. */
+  function initSeamlessLoopVideos() {
+    document.querySelectorAll('video[data-seamless-loop]').forEach(function (video) {
+      video.addEventListener('timeupdate', function () {
+        if (video.duration && video.currentTime > video.duration - 0.2) {
+          video.currentTime = 0.05;
+        }
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     injectGrain();
     runLoader();
@@ -259,5 +274,6 @@
     initMobileNav();
     markActiveNav();
     initAutoSliders();
+    initSeamlessLoopVideos();
   });
 })();
