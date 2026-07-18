@@ -494,6 +494,13 @@ body.is-loading {
   max-width: 100%;
   aspect-ratio: 16 / 9;
 }
+.ig-slider--scenes {
+  aspect-ratio: unset;
+  min-height: 80vh;
+}
+.ig-slider--scenes .ig-slider__slide .full-bleed {
+  min-height: 80vh;
+}
 .ig-slider__progress {
   position: absolute;
   top: 16px;
@@ -583,6 +590,33 @@ body.is-loading {
   line-height: var(--leading-tight);
   text-transform: uppercase;
   text-shadow: 0 2px 16px rgba(0,0,0,0.7);
+}
+.ig-slider__caption-group {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: 32px;
+  z-index: 3;
+  transition: opacity 0.3s ease;
+}
+.ig-slider__caption-group.is-fading {
+  opacity: 0;
+}
+.ig-slider__caption-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(22px, 3.5vw, 40px);
+  line-height: var(--leading-tight);
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 2px 16px rgba(0,0,0,0.7);
+}
+.ig-slider__caption-subtitle {
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--light);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
 }
 .ig-slider--full {
   position: relative;

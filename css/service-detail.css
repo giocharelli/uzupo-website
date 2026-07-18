@@ -48,6 +48,20 @@
   }
 }
 
+/* ============ FULL-BLEED VIDEO (with mobile still fallback) ============ */
+.full-bleed__bg--mobile {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .full-bleed__bg--video {
+    display: none;
+  }
+  .full-bleed__bg--mobile {
+    display: block;
+  }
+}
+
 /* ============ ABOUT THE SERVICE ============ */
 .service-about {
   padding-top: var(--section-padding);

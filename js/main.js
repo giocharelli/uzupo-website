@@ -176,6 +176,9 @@
       var prevBtn = slider.querySelector('[data-ig-prev]');
       var nextBtn = slider.querySelector('[data-ig-next]');
       var caption = slider.querySelector('.ig-slider__caption');
+      var captionGroup = slider.querySelector('.ig-slider__caption-group');
+      var captionTitleEl = captionGroup ? captionGroup.querySelector('.ig-slider__caption-title') : null;
+      var captionSubEl = captionGroup ? captionGroup.querySelector('.ig-slider__caption-subtitle') : null;
       var total = slides.length;
       var current = 0;
       var duration = parseInt(slider.getAttribute('data-ig-duration'), 10) || 4000;
@@ -195,6 +198,16 @@
           setTimeout(function () {
             caption.textContent = raw;
             caption.classList.remove('is-fading');
+          }, 250);
+        }
+        if (captionGroup) {
+          var titleRaw = slides[current].getAttribute('data-caption-title') || '';
+          var subRaw = slides[current].getAttribute('data-caption-sub') || '';
+          captionGroup.classList.add('is-fading');
+          setTimeout(function () {
+            if (captionTitleEl) captionTitleEl.textContent = titleRaw;
+            if (captionSubEl) captionSubEl.textContent = subRaw;
+            captionGroup.classList.remove('is-fading');
           }, 250);
         }
       }
