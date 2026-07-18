@@ -257,10 +257,16 @@
      fraction past 0 — skips over both problems. */
   function initSeamlessLoopVideos() {
     document.querySelectorAll('video[data-seamless-loop]').forEach(function (video) {
-      video.addEventListener('timeupdate', function () {
-        if (video.duration && video.currentTime > video.duration - 0.2) {
-          video.currentTime = 0.05;
+      function tick() {
+        if (!video.paused && video.duration && video.currentTime > video.duration - 0.12) {
+          video.currentTime = 0.08;
         }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      video.addEventListener('ended', function () {
+        video.currentTime = 0.08;
+        video.play();
       });
     });
   }

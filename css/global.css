@@ -659,4 +659,11 @@ body.is-loading {
 /* ============ RESPONSIVE UTILS ============ */
 @media (max-width: 700px) {
   .display-text { font-size: clamp(40px, 12vw, 64px); }
+  /* Long captions wrap to many more lines at narrow widths than the
+     default 16:9 slider box has room for — give this slider extra
+     height so the text never overlaps the photo above it. */
+  .ig-slider--tall-caption {
+    aspect-ratio: unset;
+    min-height: 480px;
+  }
 }
