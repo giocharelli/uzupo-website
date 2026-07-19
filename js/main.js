@@ -226,8 +226,14 @@
         timer = setTimeout(next, duration);
       }
 
-      if (prevBtn) prevBtn.addEventListener('click', prev);
-      if (nextBtn) nextBtn.addEventListener('click', next);
+      /* These zones are full-height, edge-to-edge click targets with no
+         visible icon. Left focused after a mouse click, Chromium can
+         retroactively reveal the focus-visible outline on an unrelated
+         later keypress (e.g. the left arrow) — reads as a stray amber
+         line flashing over the photo. Blur on click so that can't happen;
+         genuine keyboard (Tab) users still get the outline immediately. */
+      if (prevBtn) prevBtn.addEventListener('click', function () { prev(); prevBtn.blur(); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { next(); nextBtn.blur(); });
 
       function start() {
         render();
