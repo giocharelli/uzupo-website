@@ -375,80 +375,28 @@ body.is-loading {
   }
 }
 
-/* ============ PATTERN C — split project layout ============ */
-.project-split {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  min-height: 70vh;
+/* ============ POSTER CARD (shared: homepage carousel + work grid) ============ */
+.work-card {
+  background: var(--bg-card);
 }
-.project-split__image {
+.work-card__image {
+  width: 100%;
+  aspect-ratio: 2 / 3;
   overflow: hidden;
 }
-.project-split__image img {
+.work-card__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.project-split__info {
-  background: var(--bg-card);
-  padding: clamp(32px, 5vw, 80px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
+.work-card__info {
+  padding: 16px 4px;
 }
-.project-split__counter {
-  position: absolute;
-  top: 32px;
-  right: 32px;
-  color: var(--muted);
-  font-size: var(--size-label);
-  letter-spacing: var(--tracking-label);
-}
-.project-split__title {
+.work-card__title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(32px, 4vw, 56px);
+  font-size: 24px;
   text-transform: uppercase;
-  line-height: 1.05;
-  margin: 12px 0;
-}
-.project-split__meta {
-  color: var(--muted);
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-.project-split__festival {
-  color: var(--amber);
-  font-size: 12px;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
-.project-split__divider {
-  width: 100%;
-  height: 1px;
-  background: var(--divider);
-  margin: 24px 0;
-}
-.project-split__next {
-  color: var(--muted);
-  font-size: 13px;
-}
-.project-split__next span {
-  color: var(--white);
-  display: block;
-  margin-top: 4px;
-}
-
-@media (max-width: 900px) {
-  .project-split {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .project-split__image {
-    height: 60vh;
-  }
 }
 
 /* ============ PATTERN D — full bleed photo with overlay ============ */
