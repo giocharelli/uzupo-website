@@ -58,6 +58,10 @@
   margin-top: 12px;
 }
 
+.contact-form__success {
+  padding: 40px 0;
+}
+
 @media (max-width: 700px) {
   .form-submit .btn {
     width: 100%;

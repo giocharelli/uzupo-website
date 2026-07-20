@@ -14,12 +14,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/reset.css?v=27">
-<link rel="stylesheet" href="css/variables.css?v=27">
-<link rel="stylesheet" href="css/global.css?v=27">
-<link rel="stylesheet" href="css/nav.css?v=27">
-<link rel="stylesheet" href="css/footer.css?v=27">
-<link rel="stylesheet" href="css/contact.css?v=27">
+<link rel="stylesheet" href="css/reset.css?v=28">
+<link rel="stylesheet" href="css/variables.css?v=28">
+<link rel="stylesheet" href="css/global.css?v=28">
+<link rel="stylesheet" href="css/nav.css?v=28">
+<link rel="stylesheet" href="css/footer.css?v=28">
+<link rel="stylesheet" href="css/contact.css?v=28">
 </head>
 <body>
 
@@ -67,33 +67,38 @@
 
   <!-- SECTION 2 — CONTACT FORM -->
   <section class="contact-form-section">
-    <form class="contact-form" id="contact-form" action="mailto:hello@uzuposnd.com" method="post" enctype="text/plain">
-      <div class="form-field">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="Name" required>
+    <form class="contact-form" id="contact-form" action="https://formspree.io/f/xgogypwz" method="POST">
+      <div class="contact-form__fields">
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-field">
+          <label for="project-type">Project type</label>
+          <select id="project-type" name="project_type" required>
+            <option value="">Select one</option>
+            <option value="Film">Film</option>
+            <option value="Animation">Animation</option>
+            <option value="Game">Game</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="message">Tell us about your project</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn--amber magnetic"><span class="magnetic__content">Send message →</span></button>
+          <p class="form-note" id="form-note">We typically respond within 24 hours.</p>
+        </div>
       </div>
-      <div class="form-field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="Email" required>
-      </div>
-      <div class="form-field">
-        <label for="project-type">Project type</label>
-        <select id="project-type" name="Project type" required>
-          <option value="">Select one</option>
-          <option value="Film">Film</option>
-          <option value="Animation">Animation</option>
-          <option value="Game">Game</option>
-          <option value="Commercial">Commercial</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label for="message">Tell us about your project</label>
-        <textarea id="message" name="Message" rows="5" required></textarea>
-      </div>
-      <div class="form-submit">
-        <button type="submit" class="btn btn--amber magnetic"><span class="magnetic__content">Send message →</span></button>
-        <p class="form-note">We typically respond within 24 hours.</p>
+      <div class="contact-form__success" id="contact-form-success" hidden>
+        <h3 class="heading">Got it. We'll be in touch soon.</h3>
       </div>
     </form>
   </section>
@@ -134,19 +139,40 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-<script src="js/main.js?v=27"></script>
-<script src="js/animations.js?v=27"></script>
+<script src="js/main.js?v=28"></script>
+<script src="js/animations.js?v=28"></script>
 <script>
   document.getElementById('contact-form').addEventListener('submit', function (e) {
-    var form = e.target;
-    var name = form.Name.value;
-    var email = form.Email.value;
-    var type = form['Project type'].value;
-    var message = form.Message.value;
-    var body = 'Name: ' + name + '\nEmail: ' + email + '\nProject type: ' + type + '\n\n' + message;
-    var mailto = 'mailto:hello@uzuposnd.com?subject=' + encodeURIComponent('New project inquiry — ' + type) + '&body=' + encodeURIComponent(body);
     e.preventDefault();
-    window.location.href = mailto;
+    var form = e.target;
+    var fields = form.querySelector('.contact-form__fields');
+    var success = document.getElementById('contact-form-success');
+    var note = document.getElementById('form-note');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var defaultNote = note.textContent;
+
+    submitBtn.disabled = true;
+    note.textContent = 'Sending…';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (response) {
+      if (response.ok) {
+        fields.hidden = true;
+        success.hidden = false;
+      } else {
+        note.textContent = 'Something went wrong — email us directly at hello@uzuposnd.com.';
+        submitBtn.disabled = false;
+      }
+    }).catch(function () {
+      note.textContent = 'Something went wrong — email us directly at hello@uzuposnd.com.';
+      submitBtn.disabled = false;
+    }).finally(function () {
+      if (!success.hidden) return;
+      setTimeout(function () { note.textContent = defaultNote; }, 4000);
+    });
   });
 </script>
 </body>
