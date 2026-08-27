@@ -1,0 +1,30 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/portfolio", "destination": "/portfolio.html" },
+    { "source": "/services/foley", "destination": "/services/foley.html" },
+    { "source": "/services/sound-design", "destination": "/services/sound-design.html" },
+    { "source": "/services/field-recording", "destination": "/services/field-recording.html" },
+    { "source": "/services/music", "destination": "/services/music.html" },
+    { "source": "/services/advertising", "destination": "/services/advertising.html" }
+  ],
+  "redirects": [
+    { "source": "/work.html", "destination": "/portfolio", "permanent": true },
+    { "source": "/work", "destination": "/portfolio", "permanent": true },
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/about.html", "destination": "/about", "permanent": true },
+    { "source": "/services.html", "destination": "/services", "permanent": true },
+    { "source": "/contact.html", "destination": "/contact", "permanent": true },
+    { "source": "/portfolio.html", "destination": "/portfolio", "permanent": true },
+    { "source": "/services/foley.html", "destination": "/services/foley", "permanent": true },
+    { "source": "/services/sound-design.html", "destination": "/services/sound-design", "permanent": true },
+    { "source": "/services/field-recording.html", "destination": "/services/field-recording", "permanent": true },
+    { "source": "/services/music.html", "destination": "/services/music", "permanent": true },
+    { "source": "/services/advertising.html", "destination": "/services/advertising", "permanent": true }
+  ]
+}

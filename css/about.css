@@ -11,7 +11,7 @@
 .story-heading {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(28px, 4vw, 64px);
+  font-size: clamp(33px, 4.75vw, 76px);
   text-transform: uppercase;
   line-height: var(--leading-tight);
   color: var(--white);

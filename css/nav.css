@@ -135,6 +135,39 @@
   color: var(--amber);
 }
 
+/* Explicit close affordance inside the open overlay itself, in addition
+   to the hamburger-turned-X in the nav bar. */
+.nav__overlay-close {
+  position: absolute;
+  top: 24px;
+  right: var(--side-padding);
+  width: 32px;
+  height: 32px;
+  z-index: 1002;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease 0.1s;
+}
+.nav__overlay.is-open .nav__overlay-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav__overlay-close::before,
+.nav__overlay-close::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0;
+  width: 100%; height: 2px;
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+.nav__overlay-close::before { transform: rotate(45deg); }
+.nav__overlay-close::after { transform: rotate(-45deg); }
+.nav__overlay-close:hover::before,
+.nav__overlay-close:hover::after {
+  background: var(--amber);
+}
+
 @media (max-width: 900px) {
   .nav__links { display: none; }
   .nav__burger { display: flex; }

@@ -140,18 +140,43 @@
   function initMobileNav() {
     var burger = document.querySelector('.nav__burger');
     var overlay = document.querySelector('.nav__overlay');
+    var closeBtn = document.querySelector('.nav__overlay-close');
     if (!burger || !overlay) return;
+
+    function openMenu() {
+      burger.classList.add('is-open');
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      /* Push a history entry so the native back gesture/button closes
+         the menu instead of leaving the page. */
+      history.pushState({ uzupoMenuOpen: true }, '', window.location.href);
+    }
+
+    function closeMenu(fromPopstate) {
+      if (!burger.classList.contains('is-open')) return;
+      burger.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (!fromPopstate && history.state && history.state.uzupoMenuOpen) {
+        history.back();
+      }
+    }
+
     burger.addEventListener('click', function () {
-      var open = burger.classList.toggle('is-open');
-      overlay.classList.toggle('is-open', open);
-      document.body.style.overflow = open ? 'hidden' : '';
+      if (burger.classList.contains('is-open')) {
+        closeMenu(false);
+      } else {
+        openMenu();
+      }
     });
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () { closeMenu(false); });
+    }
     overlay.querySelectorAll('.nav__overlay-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        burger.classList.remove('is-open');
-        overlay.classList.remove('is-open');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', function () { closeMenu(false); });
+    });
+    window.addEventListener('popstate', function () {
+      if (burger.classList.contains('is-open')) closeMenu(true);
     });
   }
 
@@ -183,11 +208,16 @@
       var current = 0;
       var duration = parseInt(slider.getAttribute('data-ig-duration'), 10) || 4000;
       var timer = null;
+      var isHeld = false;
 
-      slider.style.setProperty('--ig-duration', duration + 'ms');
+      function slideDuration() {
+        var override = slides[current] && slides[current].getAttribute('data-duration');
+        return override ? parseInt(override, 10) : duration;
+      }
 
       function render() {
         slides.forEach(function (s, i) { s.classList.toggle('is-active', i === current); });
+        slider.style.setProperty('--ig-duration', slideDuration() + 'ms');
         dashes.forEach(function (d, i) {
           d.classList.toggle('is-done', i < current);
           d.classList.toggle('is-active', i === current);
@@ -223,8 +253,66 @@
 
       function restart() {
         clearTimeout(timer);
-        timer = setTimeout(next, duration);
+        if (isHeld) return;
+        timer = setTimeout(next, slideDuration());
       }
+
+      /* ============ HOLD TO PAUSE ============ */
+      function pause() {
+        if (isHeld) return;
+        isHeld = true;
+        clearTimeout(timer);
+        slider.classList.add('is-held');
+      }
+      function resume() {
+        if (!isHeld) return;
+        isHeld = false;
+        slider.classList.remove('is-held');
+        restart();
+      }
+
+      /* ============ SWIPE / DRAG ============ */
+      var dragStartX = 0;
+      var dragging = false;
+      var dragMoved = false;
+      slider.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        dragging = true;
+        dragMoved = false;
+        dragStartX = e.clientX;
+        pause();
+        if (slider.setPointerCapture) {
+          try { slider.setPointerCapture(e.pointerId); } catch (err) {}
+        }
+      });
+      slider.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        if (Math.abs(e.clientX - dragStartX) > 10) dragMoved = true;
+      });
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        var deltaX = e.clientX - dragStartX;
+        if (Math.abs(deltaX) > 50) {
+          if (deltaX < 0) { next(); } else { prev(); }
+        } else {
+          resume();
+        }
+      }
+      slider.addEventListener('pointerup', endDrag);
+      slider.addEventListener('pointercancel', function () { dragging = false; resume(); });
+      slider.addEventListener('mouseleave', function () { if (!dragging) resume(); });
+      /* A swipe that resolves into next()/prev() already calls restart(),
+         which re-arms the timer — only fall back to resume() when the
+         drag didn't cross the threshold. Suppress the click a completed
+         swipe would otherwise fire on the prev/next zone underneath it. */
+      slider.addEventListener('click', function (e) {
+        if (dragMoved) {
+          e.stopPropagation();
+          e.preventDefault();
+          dragMoved = false;
+        }
+      }, true);
 
       /* These zones are full-height, edge-to-edge click targets with no
          visible icon. Left focused after a mouse click, Chromium can
@@ -277,6 +365,20 @@
     });
   }
 
+  /* ============ FONTS READY ============ */
+  /* Flags when webfonts have actually swapped in, so width-sensitive
+     animations (the brand marquee) don't lock in against fallback-font
+     metrics and drift out of sync once Barlow Condensed loads. */
+  function initFontsReady() {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        document.documentElement.classList.add('fonts-ready');
+      });
+    } else {
+      document.documentElement.classList.add('fonts-ready');
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     injectGrain();
     runLoader();
@@ -287,5 +389,6 @@
     markActiveNav();
     initAutoSliders();
     initSeamlessLoopVideos();
+    initFontsReady();
   });
 })();

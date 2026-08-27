@@ -50,7 +50,7 @@
   text-align: center;
 }
 .statement__text {
-  font-size: clamp(32px, 6.4vw, 108px);
+  font-size: clamp(38px, 7.5vw, 127px);
   white-space: nowrap;
 }
 @media (max-width: 900px) {
@@ -127,8 +127,14 @@
 }
 
 @media (max-width: 700px) {
-  .recent-work__track {
+  /* The track is width:max-content by design (it must stay wider than
+     the viewport to have anything to scroll). The scroll container has
+     to be the fixed-width parent, not the track itself — max-content
+     can never overflow its own box, so overflow-x here was a no-op and
+     the whole carousel was just clipped and stuck. */
+  .recent-work__pin {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
   }
   .work-card {

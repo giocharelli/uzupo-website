@@ -115,6 +115,19 @@
         });
       });
     });
+
+    /* A page we navigated AWAY from can get frozen mid fade-out
+       (opacity 0) in the browser's back/forward cache. Restoring it via
+       the back/forward buttons doesn't re-fire DOMContentLoaded, so
+       that faded-out state was never reset — the page looked blank.
+       `pageshow` fires on every load, including bfcache restores;
+       `event.persisted` is true only for the latter. */
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) {
+        gsap.killTweensOf(document.body);
+        gsap.set(document.body, { opacity: 1 });
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {

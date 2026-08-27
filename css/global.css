@@ -222,10 +222,16 @@ body.is-loading {
 }
 
 /* Sections stay transparent so the single fixed glow on <body>
-   shows through continuously, with no seam between sections. */
-.section--dark,
-.section--alt {
+   shows through continuously, with no hard seam between sections.
+   .section--alt gets a very faint lightening wash + top hairline so
+   consecutive sections still read as distinct, without breaking the
+   continuous-glow feel with a visible "cut". */
+.section--dark {
   background: transparent;
+}
+.section--alt {
+  background: rgba(255, 255, 255, 0.015);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .section__label {
@@ -279,7 +285,17 @@ body.is-loading {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border-radius: 0;
-  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.1s ease-out;
+}
+/* Press feedback fires on pointer-down, not on release — an interface
+   feels dead if the only response comes after you let go. */
+.btn:active,
+.nav__cta:active,
+.filter-btn:active,
+.ig-slider__zone:active,
+.nav__burger:active,
+.nav__overlay-close:active {
+  transform: scale(0.97);
 }
 .btn--amber {
   background: var(--amber);
@@ -351,7 +367,7 @@ body.is-loading {
 .service-list__name {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(48px, 8vw, 110px);
+  font-size: clamp(57px, 9.5vw, 130px);
   text-transform: uppercase;
   line-height: 1;
   color: inherit;
@@ -378,6 +394,10 @@ body.is-loading {
 /* ============ POSTER CARD (shared: homepage carousel + work grid) ============ */
 .work-card {
   background: var(--bg-card);
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 .work-card__image {
   width: 100%;
@@ -388,6 +408,14 @@ body.is-loading {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.work-card:hover .work-card__image img {
+  transform: scale(1.04);
+}
+.work-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease-out;
 }
 .work-card__info {
   padding: 16px 4px;
@@ -397,6 +425,127 @@ body.is-loading {
   font-weight: 900;
   font-size: 24px;
   text-transform: uppercase;
+}
+
+/* ============ PROJECT MODAL ============ */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal[hidden] {
+  display: none;
+}
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal.is-open .modal__backdrop {
+  opacity: 1;
+}
+.modal__panel {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  max-width: 880px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  opacity: 0;
+  transform: scale(0.94) translateY(12px);
+  transition: opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.modal.is-open .modal__panel {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.modal__poster {
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+.modal__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal__info {
+  padding: clamp(28px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.modal__label {
+  margin-bottom: 16px;
+}
+.modal__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 3.5vw, 42px);
+  text-transform: uppercase;
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.modal__credit {
+  color: var(--light);
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.modal__festival {
+  color: var(--amber);
+  font-size: 12px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.modal__credit:empty,
+.modal__festival:empty {
+  display: none;
+}
+.modal__description {
+  color: var(--light);
+  font-size: var(--size-body);
+  line-height: var(--leading-body);
+}
+.modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  color: var(--white);
+  font-size: 28px;
+  line-height: 1;
+  transition: color 0.3s ease, transform 0.1s ease-out;
+}
+.modal__close:hover {
+  color: var(--amber);
+}
+.modal__close:active {
+  transform: scale(0.9);
+}
+
+@media (max-width: 700px) {
+  .modal__panel {
+    grid-template-columns: 1fr;
+    max-height: 90vh;
+  }
+  .modal__poster {
+    aspect-ratio: 3 / 2;
+  }
 }
 
 /* ============ PATTERN D — full bleed photo with overlay ============ */
@@ -478,6 +627,14 @@ body.is-loading {
 }
 .ig-slider__dash.is-active::before {
   animation: ig-progress var(--ig-duration, 4000ms) linear forwards;
+}
+/* Held (mouse down / touch hold or mid-swipe) — freeze the progress
+   fill in place along with the JS auto-advance timer. */
+.ig-slider.is-held .ig-slider__dash.is-active::before {
+  animation-play-state: paused;
+}
+.ig-slider__track {
+  touch-action: pan-y;
 }
 @keyframes ig-progress {
   from { width: 0%; }
@@ -604,9 +761,35 @@ body.is-loading {
   opacity: 1;
 }
 
+/* ============ REDUCED MOTION ============ */
+/* A gentler, non-vestibular equivalent — cross-fade instead of slide/
+   spring/parallax, no elastic overshoot, but keep the opacity/color
+   changes that aid comprehension. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-line .inner {
+    transition: opacity 0.3s ease;
+    transform: none !important;
+  }
+  .reveal-line .inner:not(.is-visible) { opacity: 0; }
+  .reveal-line.is-visible .inner { opacity: 1; }
+  .reveal-body,
+  .img-reveal,
+  .work-card,
+  .ig-slider__slide,
+  .magnetic__content,
+  .modal,
+  .modal__panel {
+    transition-duration: 0.2s !important;
+    animation-duration: 0.2s !important;
+    transform: none !important;
+  }
+  .img-reveal { clip-path: none !important; }
+  html { scroll-behavior: auto !important; }
+}
+
 /* ============ RESPONSIVE UTILS ============ */
 @media (max-width: 700px) {
-  .display-text { font-size: clamp(40px, 12vw, 64px); }
+  .display-text { font-size: clamp(47px, 14vw, 76px); }
   /* Long captions wrap to many more lines at narrow widths than the
      default 16:9 slider box has room for — give this slider extra
      height so the text never overlaps the photo above it. */
