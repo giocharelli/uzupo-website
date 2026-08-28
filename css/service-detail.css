@@ -35,17 +35,12 @@
   max-width: 1200px;
 }
 
+/* The hero video now plays on every screen size — it's the "actual
+   work happening" shot and reads as more effective than a still, even
+   on mobile. This fallback image stays in the markup only in case a
+   video ever fails to load, never shown otherwise. */
 .service-hero__media--mobile {
   display: none;
-}
-
-@media (max-width: 700px) {
-  .service-hero__media--video {
-    display: none;
-  }
-  .service-hero__media--mobile {
-    display: block;
-  }
 }
 
 /* ============ FULL-BLEED VIDEO (with mobile still fallback) ============ */

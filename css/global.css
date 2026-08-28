@@ -905,4 +905,21 @@ body.is-loading {
     aspect-ratio: unset;
     min-height: 480px;
   }
+  /* The caption now sits on a solid background bar rather than plain
+     shadowed text (for legibility over bright photos) — on a narrow
+     screen the longest caption's paragraph can wrap tall enough to
+     cover the entire photo behind it. Cap how tall the text block can
+     grow and let it scroll instead, so there's always a photo showing
+     above the caption. */
+  .ig-slider__caption-group--big .ig-slider__caption-subtitle {
+    max-height: 33vh;
+    overflow-y: auto;
+  }
+  /* object-fit:cover crops this photo to a tall, narrow window on
+     mobile — centered, that crop lands squarely on the middle of the
+     shot. Shifting the crop toward the image's left side keeps more
+     of its left edge in frame instead. */
+  .ig-slider--scenes .ig-slider__slide:first-child .full-bleed__bg {
+    object-position: left center;
+  }
 }

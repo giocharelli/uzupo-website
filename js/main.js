@@ -307,20 +307,37 @@
         dragging = true;
         dragMoved = false;
         dragStartX = e.clientX;
-        pause();
+        /* On touch, don't pause yet — a plain page-scroll touch that
+           happens to start over the slider would pause it immediately,
+           and some mobile browsers don't reliably fire pointerup/
+           pointercancel once that gesture is handed off to native
+           scrolling, leaving it stuck paused ("freezes"). Wait for
+           confirmed horizontal movement below instead. Mouse behavior
+           is unchanged — pausing immediately there is fine since a
+           mouse click can't be mistaken for a page scroll. */
+        if (e.pointerType !== 'touch') pause();
         if (slider.setPointerCapture) {
           try { slider.setPointerCapture(e.pointerId); } catch (err) {}
         }
       });
       slider.addEventListener('pointermove', function (e) {
         if (!dragging) return;
-        if (Math.abs(e.clientX - dragStartX) > 10) dragMoved = true;
+        if (Math.abs(e.clientX - dragStartX) > 10) {
+          if (!dragMoved && e.pointerType === 'touch') pause();
+          dragMoved = true;
+        }
       });
       function endDrag(e) {
         if (!dragging) return;
         dragging = false;
         var deltaX = e.clientX - dragStartX;
         if (Math.abs(deltaX) > 50) {
+          /* next()/prev() call restart() internally, which bails out
+             and never rearms the timer while isHeld is still true from
+             this drag — clear it first or a completed swipe silently
+             stops the slider from auto-advancing afterward. */
+          isHeld = false;
+          slider.classList.remove('is-held');
           if (deltaX < 0) { next(); } else { prev(); }
         } else {
           resume();
@@ -373,7 +390,12 @@
          it, reading as the text "appearing while scrolling". */
       render(true);
 
-      if ('IntersectionObserver' in window) {
+      /* Waiting for the slider to scroll into view before starting is a
+         desktop nicety (don't run a timer nobody's looking at) — on
+         mobile it read as the slider "starting late" or being frozen
+         until the visibility threshold happened to be crossed. Just
+         start it right away on touch instead. */
+      if (!isTouch && 'IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
