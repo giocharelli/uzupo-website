@@ -898,26 +898,36 @@ body.is-loading {
 /* ============ RESPONSIVE UTILS ============ */
 @media (max-width: 700px) {
   .display-text { font-size: clamp(47px, 14vw, 76px); }
-  /* Long captions wrap to many more lines at narrow widths than the
-     default 16:9 slider box has room for — give this slider extra
-     height so the text never overlaps the photo above it.
-     Explicit height, not min-height: the slide photos inside are
-     positioned via nested percentage heights (.ig-slider__track at
-     height:100%, then .ig-slider__slide at inset:0, then the img at
-     height:100%), and at least on iOS Safari a min-height-only box
-     doesn't reliably count as a definite height for that chain to
-     resolve against — the photo collapses to nothing while the
-     caption, which doesn't depend on it, renders fine regardless. */
+  /* On mobile, stop overlaying this caption on top of the photo —
+     that's what forced the photo into a tall, boxy, non-landscape
+     crop in the first place (extra height had to be reserved so the
+     text wouldn't cover it). Instead stack them: photo keeps its
+     normal 16:9 landscape framing, exactly like on desktop, and the
+     caption just flows underneath in the page's normal document flow,
+     free to grow to whatever height the text actually needs. */
   .ig-slider--tall-caption {
     aspect-ratio: unset;
-    height: 480px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
   }
-  /* The caption now sits on a solid background bar rather than plain
-     shadowed text (for legibility over bright photos) — on a narrow
-     screen the longest caption's paragraph can wrap tall enough to
-     cover the entire photo behind it. Cap how tall the text block can
-     grow and let it scroll instead, so there's always a photo showing
-     above the caption. */
+  .ig-slider--tall-caption .ig-slider__track {
+    position: relative;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    flex: none;
+  }
+  .ig-slider--tall-caption .ig-slider__caption-group {
+    position: static;
+  }
+  /* height:100% on the zones below has the exact same "indefinite
+     parent height" risk as the photo did — top+bottom instead stretches
+     an absolutely positioned box to fill its container without relying
+     on a percentage resolving against anything. */
+  .ig-slider--tall-caption .ig-slider__zone {
+    height: auto;
+    bottom: 0;
+  }
   .ig-slider__caption-group--big .ig-slider__caption-subtitle {
     max-height: 33vh;
     overflow-y: auto;
