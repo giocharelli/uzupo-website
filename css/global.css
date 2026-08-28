@@ -708,10 +708,10 @@ body.is-loading {
 }
 .ig-slider--scenes {
   aspect-ratio: unset;
-  min-height: 80vh;
+  height: 80vh;
 }
 .ig-slider--scenes .ig-slider__slide .full-bleed {
-  min-height: 80vh;
+  height: 100%;
 }
 .ig-slider__progress {
   position: absolute;
@@ -900,10 +900,17 @@ body.is-loading {
   .display-text { font-size: clamp(47px, 14vw, 76px); }
   /* Long captions wrap to many more lines at narrow widths than the
      default 16:9 slider box has room for — give this slider extra
-     height so the text never overlaps the photo above it. */
+     height so the text never overlaps the photo above it.
+     Explicit height, not min-height: the slide photos inside are
+     positioned via nested percentage heights (.ig-slider__track at
+     height:100%, then .ig-slider__slide at inset:0, then the img at
+     height:100%), and at least on iOS Safari a min-height-only box
+     doesn't reliably count as a definite height for that chain to
+     resolve against — the photo collapses to nothing while the
+     caption, which doesn't depend on it, renders fine regardless. */
   .ig-slider--tall-caption {
     aspect-ratio: unset;
-    min-height: 480px;
+    height: 480px;
   }
   /* The caption now sits on a solid background bar rather than plain
      shadowed text (for legibility over bright photos) — on a narrow
