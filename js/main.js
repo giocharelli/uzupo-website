@@ -125,11 +125,23 @@
   function initNavScroll() {
     var nav = document.querySelector('.nav');
     if (!nav) return;
+    var logo = nav.querySelector('.nav__logo img');
+    var wasScrolled = null;
     function update() {
-      if (window.scrollY > 80) {
-        nav.classList.add('is-scrolled');
-      } else {
-        nav.classList.remove('is-scrolled');
+      var isScrolled = window.scrollY > 80;
+      if (isScrolled === wasScrolled) return;
+      wasScrolled = isScrolled;
+      nav.classList.toggle('is-scrolled', isScrolled);
+      /* The nav is transparent until scrolled, so it sits directly over
+         whatever the page's first section is — a dark photo, solid
+         black, or now sometimes solid amber. An amber-colored logo
+         mark can lose all its internal detail once it's on top of an
+         amber background, so it swaps to the white logo asset until
+         the nav gets its own dark backing to sit on. */
+      if (logo) {
+        logo.src = isScrolled
+          ? '/assets/logos/uzupologoamber.png'
+          : '/assets/logos/uzupologowhite.png';
       }
     }
     window.addEventListener('scroll', update);
@@ -333,10 +345,12 @@
          visible icon. Left focused after a mouse click, Chromium can
          retroactively reveal the focus-visible outline on an unrelated
          later keypress (e.g. the left arrow) — reads as a stray amber
-         line flashing over the photo. Blur on click so that can't happen;
-         genuine keyboard (Tab) users still get the outline immediately. */
-      if (prevBtn) prevBtn.addEventListener('click', function () { prev(); prevBtn.blur(); });
-      if (nextBtn) nextBtn.addEventListener('click', function () { next(); nextBtn.blur(); });
+         line flashing over the photo. Move focus to the slider itself
+         instead of just blurring: keeps arrow-key navigation working
+         right after a mouse click, and :focus-visible doesn't trigger
+         from a pointer-driven focus() call, so no stray outline either. */
+      if (prevBtn) prevBtn.addEventListener('click', function () { prev(); slider.focus({ preventScroll: true }); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { next(); slider.focus({ preventScroll: true }); });
 
       /* ============ KEYBOARD NAVIGATION ============ */
       if (!slider.hasAttribute('tabindex')) slider.setAttribute('tabindex', '0');
@@ -344,6 +358,12 @@
         if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
         else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
       });
+      /* Focusing only on click means arrows do nothing until a button
+         has been pressed at least once — hovering in is enough to start
+         using the keyboard, matching how a mouse click already works. */
+      if (!isTouch) {
+        slider.addEventListener('mouseenter', function () { slider.focus({ preventScroll: true }); });
+      }
 
       /* Caption text renders immediately and unconditionally — only the
          auto-advance timer waits for the slider to actually be visible.

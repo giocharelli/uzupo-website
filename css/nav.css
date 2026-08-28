@@ -43,20 +43,21 @@
   left: 0; bottom: -2px;
   width: 0;
   height: 1px;
-  background: var(--amber);
+  /* White, not amber — an amber underline over the amber hero section
+     was invisible for the same reason the old hover text color was. */
+  background: var(--white);
   transition: width 0.3s ease;
 }
-.nav__link:hover,
-.nav__link.is-active {
-  color: var(--amber);
-}
+/* Text stays white on hover/active — sections can now be solid amber,
+   and amber text on an amber section would vanish. The underline
+   sliding in is feedback enough. */
 .nav__link:hover::after,
 .nav__link.is-active::after {
   width: 100%;
 }
 
 .nav__cta {
-  background: var(--amber);
+  background: var(--white);
   color: var(--bg);
   padding: 12px 28px;
   font-size: 13px;
@@ -65,7 +66,7 @@
   text-transform: uppercase;
 }
 .nav__cta:hover {
-  background: #f2a555;
+  background: #e8e8e8;
 }
 
 /* Mobile hamburger */

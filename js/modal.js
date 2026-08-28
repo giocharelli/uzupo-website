@@ -32,31 +32,31 @@
     },
     'the-gamers': {
       title: 'The Gamers: Dornkess Falls',
-      service: 'Full Foley',
+      service: 'Foley',
       credit: '',
       festival: '',
-      description: 'Full foley library built for an interactive game project.'
+      description: 'Full foley for this intense, highly detailed medieval feature film — a sprawling quest across many characters.'
     },
     'freud': {
       title: 'Freud And His Wolf-Man',
-      service: '',
+      service: 'Full Audio Post · 5.1 Mix',
       credit: '',
       festival: '',
-      description: 'Project details coming soon.'
+      description: 'Complete audio post for this feature film — sound design, foley, dialogue edit, and a full 5.1 mix.'
     },
     'elene-dariani': {
       title: 'Elene Dariani',
       service: 'Sound Design & Foley',
       credit: 'Fantasmagoria',
       festival: 'Annecy Animation Film Festival · Sarajevo Film Festival',
-      description: 'Sound design and foley built for a fully imagined animated world.'
+      description: 'Sound design and foley built for this stop-motion puppet animation\'s fully imagined world.'
     },
     'what-made-you-tired': {
       title: 'What Made You Tired?',
       service: 'Full Audio Post · 5.1 Mix',
       credit: 'Fantasmagoria',
       festival: '',
-      description: 'Complete audio post, mixed in 5.1 for animation.'
+      description: 'Complete audio post — sound design, foley, and a 5.1 mix — for this stop-motion puppet animation.'
     },
     'oh-mother-mother': {
       title: 'Oh, Mother Mother',

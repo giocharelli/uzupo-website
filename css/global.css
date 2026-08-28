@@ -53,7 +53,13 @@ select:focus-visible,
   background: var(--amber);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 10000;
+  /* Now that sections can be bright amber or white, a flat amber dot
+     can land on a same-or-close-toned background and vanish. Blending
+     against whatever's underneath keeps it visible everywhere. */
+  mix-blend-mode: difference;
+  /* Above the project modal (20000) — it was rendering behind the
+     modal panel and effectively vanishing whenever one was open. */
+  z-index: 20001;
   transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -65,10 +71,11 @@ select:focus-visible,
   border: 1px solid rgba(255,255,255,0.35);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 20001;
   transform: translate(-50%, -50%);
   transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, opacity 0.2s ease;
   opacity: 0;
+  mix-blend-mode: difference;
 }
 .cursor-dot.is-active,
 .cursor-ring.is-active {
@@ -219,10 +226,15 @@ body.is-loading {
 }
 
 /* A full-bleed slider already reaches the section edge — drop the
-   trailing padding so it doesn't leave an empty gap before the next
-   section starts. */
+   padding on whichever side(s) butt directly against it, so it doesn't
+   leave an empty gap before the next section starts. Now that adjacent
+   sections can be very different solid colors, an unflushed gap reads
+   as a distracting block of the wrong color, not just empty space. */
 .section--flush-bottom {
   padding-bottom: 0;
+}
+.section--flush-top {
+  padding-top: 0;
 }
 
 /* Solid backgrounds only, never a gradient — full, confident color
@@ -330,6 +342,9 @@ body.is-loading {
    amber without a button needing the ink/bright button treatment.
    Every text element that can land inside either gets the same dark
    "ink" swap for contrast against the bright fill. */
+.section--cta-amber {
+  background: var(--amber);
+}
 .section--alt .display-text,
 .section--alt .heading,
 .section--alt .section__label,
@@ -763,36 +778,40 @@ body.is-loading {
 .ig-slider__zone--next { right: 0; }
 .ig-slider__caption {
   position: absolute;
-  left: 20px;
-  bottom: 16px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 3;
+  padding: 14px 20px;
   color: var(--white);
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.75);
   transition: opacity 0.3s ease;
 }
 .ig-slider__caption.is-fading {
   opacity: 0;
 }
 .ig-slider__caption--big {
-  left: 32px;
-  right: 32px;
-  bottom: 32px;
+  padding: 28px 32px;
   font-family: var(--font-display);
   font-weight: 900;
   font-size: clamp(28px, 5vw, 64px);
   line-height: var(--leading-tight);
   text-transform: uppercase;
-  text-shadow: 0 2px 16px rgba(0,0,0,0.7);
 }
+/* A solid bar behind the caption, not just a text-shadow — a bright
+   patch of photo (light walls, gear, daylight) can still wash out
+   shadowed text on its own, especially for the longer captions. */
 .ig-slider__caption-group {
   position: absolute;
-  left: 32px;
-  right: 32px;
-  bottom: 32px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 3;
+  padding: 28px 32px;
+  background: rgba(0, 0, 0, 0.75);
   transition: opacity 0.3s ease;
 }
 .ig-slider__caption-group.is-fading {
@@ -805,17 +824,17 @@ body.is-loading {
   line-height: var(--leading-tight);
   text-transform: uppercase;
   color: var(--white);
-  text-shadow: 0 2px 16px rgba(0,0,0,0.7);
 }
 .ig-slider__caption-group--big .ig-slider__caption-title {
   font-size: clamp(28px, 5vw, 64px);
 }
 .ig-slider__caption-subtitle {
   margin-top: 6px;
+  max-width: 640px;
   font-family: var(--font-body);
   font-size: 14px;
+  line-height: 1.6;
   color: var(--light);
-  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
 }
 .ig-slider--full {
   position: relative;
