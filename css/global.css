@@ -20,10 +20,19 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
-select:focus-visible,
-.ig-slider:focus-visible {
+select:focus-visible {
   outline: 2px solid var(--amber);
   outline-offset: 2px;
+}
+/* The slider container is focused programmatically after every click
+   or hover just to keep arrow-key navigation working — that's an
+   internal mechanism, not a user-driven keyboard focus, but browsers
+   sometimes show :focus-visible for it anyway, flashing an amber line
+   above/below the photo on next/prev. The prev/next buttons still get
+   a proper ring from the rule above on genuine keyboard Tab use. */
+.ig-slider:focus,
+.ig-slider:focus-visible {
+  outline: none;
 }
 
 /* ============ SCROLLBAR ============ */
