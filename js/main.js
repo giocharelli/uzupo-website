@@ -222,20 +222,6 @@
       var timer = null;
       var isHeld = false;
 
-      /* On mobile, native loading="lazy" combined with these slides
-         starting at opacity:0 (only the current one is visible) seems
-         to leave later slides' images never actually starting their
-         download until well after the slider has advanced to them —
-         showing up as a blank photo once auto-advance reaches them.
-         Just load every slide's photo immediately on touch devices;
-         a handful of gallery images is a small enough cost either way. */
-      if (isTouch) {
-        slides.forEach(function (slide) {
-          var img = slide.querySelector('img');
-          if (img) img.loading = 'eager';
-        });
-      }
-
       function slideDuration() {
         var override = slides[current] && slides[current].getAttribute('data-duration');
         return override ? parseInt(override, 10) : duration;
@@ -419,37 +405,24 @@
          it, reading as the text "appearing while scrolling". */
       render(true);
 
-      /* Wait until the slider actually scrolls into view before the
-         timer starts, on every device. Starting immediately (tried
-         briefly for mobile) backfired: a slider sitting off-screen
-         below the fold would auto-advance through several slides
-         before the visitor ever scrolled to it, landing on whichever
-         slide it happened to reach by then — and since every slide but
-         the first is loading="lazy", that slide's photo often hadn't
-         even started downloading yet, since the slider was still
-         off-screen when the timer moved past it. */
-      if ('IntersectionObserver' in window) {
-        /* On touch, fire well before the slider is actually on screen
-           (a generous rootMargin) rather than waiting for 15% of it to
-           be visible. Some mobile browsers appear to hold intersection
-           callbacks until a scroll gesture fully settles, so a trigger
-           timed to "already visible" reads as needing an extra nudge
-           (a tap) before it starts — firing earlier hides that gap. */
-        var observerOptions = isTouch
-          ? { threshold: 0, rootMargin: '600px 0px' }
-          : { threshold: 0.15 };
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              restart();
-              observer.disconnect();
-            }
-          });
-        }, observerOptions);
-        observer.observe(slider);
-      } else {
-        restart();
+      /* Wait until the slider actually scrolls close to view before the
+         timer starts, on every device — a slider sitting off-screen
+         below the fold shouldn't auto-advance through slides nobody's
+         looking at. Plain scroll-position polling instead of
+         IntersectionObserver: this needs to be simple to reason about
+         and hold up everywhere, and a scroll listener plus
+         getBoundingClientRect is about as basic as browser APIs get. */
+      function checkVisibility() {
+        var rect = slider.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 400 && rect.bottom > -400) {
+          restart();
+          window.removeEventListener('scroll', checkVisibility);
+          window.removeEventListener('resize', checkVisibility);
+        }
       }
+      window.addEventListener('scroll', checkVisibility, { passive: true });
+      window.addEventListener('resize', checkVisibility);
+      checkVisibility();
     });
   }
 
