@@ -222,6 +222,20 @@
       var timer = null;
       var isHeld = false;
 
+      /* On mobile, native loading="lazy" combined with these slides
+         starting at opacity:0 (only the current one is visible) seems
+         to leave later slides' images never actually starting their
+         download until well after the slider has advanced to them —
+         showing up as a blank photo once auto-advance reaches them.
+         Just load every slide's photo immediately on touch devices;
+         a handful of gallery images is a small enough cost either way. */
+      if (isTouch) {
+        slides.forEach(function (slide) {
+          var img = slide.querySelector('img');
+          if (img) img.loading = 'eager';
+        });
+      }
+
       function slideDuration() {
         var override = slides[current] && slides[current].getAttribute('data-duration');
         return override ? parseInt(override, 10) : duration;
@@ -292,10 +306,12 @@
         restart();
       }
 
-      /* ============ SWIPE / DRAG ============ */
+      /* ============ SWIPE / DRAG / HOLD-TO-PAUSE ============ */
       var dragStartX = 0;
+      var dragStartY = 0;
       var dragging = false;
       var dragMoved = false;
+      var holdTimer = null;
       slider.addEventListener('pointerdown', function (e) {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         /* Pointer capture below redirects the click that follows onto
@@ -307,27 +323,40 @@
         dragging = true;
         dragMoved = false;
         dragStartX = e.clientX;
-        /* On touch, don't pause yet — a plain page-scroll touch that
-           happens to start over the slider would pause it immediately,
-           and some mobile browsers don't reliably fire pointerup/
-           pointercancel once that gesture is handed off to native
-           scrolling, leaving it stuck paused ("freezes"). Wait for
-           confirmed horizontal movement below instead. Mouse behavior
-           is unchanged — pausing immediately there is fine since a
-           mouse click can't be mistaken for a page scroll. */
-        if (e.pointerType !== 'touch') pause();
+        dragStartY = e.clientY;
+        if (e.pointerType !== 'touch') {
+          pause();
+        } else {
+          /* Don't pause instantly on touch — a plain page-scroll touch
+             that happens to start over the slider would pause it right
+             away. Instead wait briefly: if the finger is still roughly
+             in place once this fires, it's a deliberate press-and-hold,
+             so pause. Real movement (scroll or swipe) cancels this in
+             pointermove below — horizontal movement pauses immediately
+             there instead, vertical movement just lets the page scroll. */
+          clearTimeout(holdTimer);
+          holdTimer = setTimeout(function () {
+            if (dragging && !dragMoved) pause();
+          }, 150);
+        }
         if (slider.setPointerCapture) {
           try { slider.setPointerCapture(e.pointerId); } catch (err) {}
         }
       });
       slider.addEventListener('pointermove', function (e) {
         if (!dragging) return;
-        if (Math.abs(e.clientX - dragStartX) > 10) {
-          if (!dragMoved && e.pointerType === 'touch') pause();
+        var dx = e.clientX - dragStartX;
+        var dy = e.clientY - dragStartY;
+        if (!dragMoved && Math.abs(dx) > 10) {
+          clearTimeout(holdTimer);
           dragMoved = true;
+          if (e.pointerType === 'touch') pause();
+        } else if (Math.abs(dy) > 10) {
+          clearTimeout(holdTimer);
         }
       });
       function endDrag(e) {
+        clearTimeout(holdTimer);
         if (!dragging) return;
         dragging = false;
         var deltaX = e.clientX - dragStartX;
@@ -344,7 +373,7 @@
         }
       }
       slider.addEventListener('pointerup', endDrag);
-      slider.addEventListener('pointercancel', function () { dragging = false; resume(); });
+      slider.addEventListener('pointercancel', function () { clearTimeout(holdTimer); dragging = false; resume(); });
       slider.addEventListener('mouseleave', function () { if (!dragging) resume(); });
       /* A swipe that resolves into next()/prev() already calls restart(),
          which re-arms the timer — only fall back to resume() when the
@@ -400,6 +429,15 @@
          even started downloading yet, since the slider was still
          off-screen when the timer moved past it. */
       if ('IntersectionObserver' in window) {
+        /* On touch, fire well before the slider is actually on screen
+           (a generous rootMargin) rather than waiting for 15% of it to
+           be visible. Some mobile browsers appear to hold intersection
+           callbacks until a scroll gesture fully settles, so a trigger
+           timed to "already visible" reads as needing an extra nudge
+           (a tap) before it starts — firing earlier hides that gap. */
+        var observerOptions = isTouch
+          ? { threshold: 0, rootMargin: '600px 0px' }
+          : { threshold: 0.15 };
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
@@ -407,7 +445,7 @@
               observer.disconnect();
             }
           });
-        }, { threshold: 0.15 });
+        }, observerOptions);
         observer.observe(slider);
       } else {
         restart();
