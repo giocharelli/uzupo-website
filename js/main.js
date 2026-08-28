@@ -390,12 +390,16 @@
          it, reading as the text "appearing while scrolling". */
       render(true);
 
-      /* Waiting for the slider to scroll into view before starting is a
-         desktop nicety (don't run a timer nobody's looking at) — on
-         mobile it read as the slider "starting late" or being frozen
-         until the visibility threshold happened to be crossed. Just
-         start it right away on touch instead. */
-      if (!isTouch && 'IntersectionObserver' in window) {
+      /* Wait until the slider actually scrolls into view before the
+         timer starts, on every device. Starting immediately (tried
+         briefly for mobile) backfired: a slider sitting off-screen
+         below the fold would auto-advance through several slides
+         before the visitor ever scrolled to it, landing on whichever
+         slide it happened to reach by then — and since every slide but
+         the first is loading="lazy", that slide's photo often hadn't
+         even started downloading yet, since the slider was still
+         off-screen when the timer moved past it. */
+      if ('IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
