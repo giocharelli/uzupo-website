@@ -8,13 +8,7 @@ body {
   font-weight: 400;
   font-size: var(--size-body);
   line-height: var(--leading-body);
-  /* One continuous amber glow for the whole page. Fixed to the
-     viewport (not the document) so it never seams at section
-     boundaries and doesn't depend on page length. Individual
-     sections are transparent so this always shows through.
-     Revert: `background: var(--bg);` and drop background-attachment. */
-  background: radial-gradient(ellipse 90% 60% at 50% 0%, rgba(232, 148, 58, 0.10), transparent 65%), var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
 }
 
 ::selection {
@@ -26,7 +20,8 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
-select:focus-visible {
+select:focus-visible,
+.ig-slider:focus-visible {
   outline: 2px solid var(--amber);
   outline-offset: 2px;
 }
@@ -139,7 +134,16 @@ body.is-loading {
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--amber);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.label::before {
+  content: '';
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  flex: none;
 }
 
 .display-text {
@@ -221,17 +225,18 @@ body.is-loading {
   padding-bottom: 0;
 }
 
-/* Sections stay transparent so the single fixed glow on <body>
-   shows through continuously, with no hard seam between sections.
-   .section--alt gets a very faint lightening wash + top hairline so
-   consecutive sections still read as distinct, without breaking the
-   continuous-glow feel with a visible "cut". */
+/* Solid backgrounds only, never a gradient — full, confident color
+   blocks instead of one dark tone bleeding into a slightly-less-dark
+   one. Black, amber, and white alternate down the page for a bolder,
+   more colorful rhythm. */
 .section--dark {
-  background: transparent;
+  background: var(--bg);
 }
 .section--alt {
-  background: rgba(255, 255, 255, 0.015);
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--amber);
+}
+.section--white {
+  background: var(--white);
 }
 
 .section__label {
@@ -240,17 +245,22 @@ body.is-loading {
 }
 
 /* ============ REVEALS ============ */
+/* .reveal-line .inner's transform is driven entirely by JS (see
+   initLineReveals in animations.js), which sets yPercent:110 the moment
+   it runs. No transform here in CSS: GSAP reads an element's existing
+   *computed* transform the first time it touches it, and a browser
+   only ever reports resolved pixels, never the original percentage —
+   so a CSS translateY(110%) fallback gets cached by GSAP as a fixed
+   pixel baseline and then yPercent stacks on top of it, permanently
+   adding an extra 110%-of-height offset no later yPercent value can
+   ever clear. Leaving this rule empty avoids that trap; the brief gap
+   before JS runs is imperceptible in practice. */
 .reveal-line {
   overflow: hidden;
   display: block;
 }
 .reveal-line .inner {
   display: block;
-  transform: translateY(110%);
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-line.is-visible .inner {
-  transform: translateY(0);
 }
 
 .reveal-body {
@@ -312,6 +322,79 @@ body.is-loading {
 .btn--outline:hover {
   border-color: var(--amber);
   color: var(--amber);
+}
+
+/* ============ BOLD COLOR SECTIONS ============ */
+/* .section--alt and .section--cta-amber are both full-strength amber —
+   the CTA variant exists separately only so a future section can be
+   amber without a button needing the ink/bright button treatment.
+   Every text element that can land inside either gets the same dark
+   "ink" swap for contrast against the bright fill. */
+.section--alt .display-text,
+.section--alt .heading,
+.section--alt .section__label,
+.section--alt .pull-quote,
+.section--cta-amber .display-text,
+.section--cta-amber .heading,
+.section--cta-amber .section__label,
+.section--cta-amber .pull-quote {
+  color: var(--amber-ink);
+}
+.section--alt .body-text,
+.section--cta-amber .body-text {
+  color: var(--amber-ink);
+  opacity: 0.72;
+}
+.section--alt .amber-link,
+.section--cta-amber .amber-link {
+  color: var(--amber-ink);
+}
+.section--alt .btn--amber,
+.section--cta-amber .btn--amber {
+  background: var(--amber-ink);
+  color: var(--amber-bright);
+}
+.section--alt .btn--amber:hover,
+.section--cta-amber .btn--amber:hover {
+  background: #000;
+}
+.section--alt .btn--outline,
+.section--cta-amber .btn--outline {
+  border-color: var(--amber-ink);
+  color: var(--amber-ink);
+}
+.section--alt .btn--outline:hover,
+.section--cta-amber .btn--outline:hover {
+  border-color: var(--amber-ink);
+  background: var(--amber-ink);
+  color: var(--amber-bright);
+}
+
+/* .section--white — the one true color reversal: a bright stop among
+   all the black and amber. Same ink text, reserved for a rare, high-
+   impact moment rather than general use. */
+.section--white .display-text,
+.section--white .heading,
+.section--white .pull-quote {
+  color: var(--bg);
+}
+.section--white .section__label {
+  color: var(--amber);
+}
+.section--white .body-text {
+  color: #4A4A4A;
+}
+.section--white .amber-link {
+  color: var(--amber);
+}
+.section--white .btn--outline {
+  border-color: var(--bg);
+  color: var(--bg);
+}
+.section--white .btn--outline:hover {
+  border-color: var(--bg);
+  background: var(--bg);
+  color: var(--amber-bright);
 }
 
 .magnetic {
@@ -564,6 +647,14 @@ body.is-loading {
   object-fit: cover;
   z-index: 0;
 }
+/* Oversized and pre-offset so the parallax scrub (see initParallax in
+   animations.js) has room to shift the image without exposing an edge. */
+.full-bleed__bg:not(.full-bleed__bg--video) {
+  height: 130%;
+  top: -15%;
+  bottom: auto;
+  will-change: transform;
+}
 .full-bleed__overlay {
   position: absolute;
   inset: 0;
@@ -729,15 +820,6 @@ body.is-loading {
 .ig-slider--full {
   position: relative;
 }
-.ig-slider--full::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 45%;
-  background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
-  z-index: 2;
-  pointer-events: none;
-}
 
 /* ============ FESTIVAL ROW (static) ============ */
 .festivals__row {
@@ -767,11 +849,9 @@ body.is-loading {
    changes that aid comprehension. */
 @media (prefers-reduced-motion: reduce) {
   .reveal-line .inner {
-    transition: opacity 0.3s ease;
     transform: none !important;
+    opacity: 1 !important;
   }
-  .reveal-line .inner:not(.is-visible) { opacity: 0; }
-  .reveal-line.is-visible .inner { opacity: 1; }
   .reveal-body,
   .img-reveal,
   .work-card,

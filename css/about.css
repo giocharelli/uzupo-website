@@ -1,5 +1,5 @@
 .page-hero {
-  padding: clamp(160px, 20vh, 220px) var(--side-padding) clamp(60px, 8vh, 100px);
+  padding: clamp(224px, 28vh, 308px) var(--side-padding) clamp(84px, 11vh, 140px);
 }
 .page-hero__label {
   margin-bottom: 24px;

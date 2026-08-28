@@ -215,7 +215,7 @@
         return override ? parseInt(override, 10) : duration;
       }
 
-      function render() {
+      function render(immediate) {
         slides.forEach(function (s, i) { s.classList.toggle('is-active', i === current); });
         slider.style.setProperty('--ig-duration', slideDuration() + 'ms');
         dashes.forEach(function (d, i) {
@@ -224,21 +224,30 @@
         });
         var raw = slides[current].getAttribute('data-caption') || '';
         if (caption) {
-          caption.classList.add('is-fading');
-          setTimeout(function () {
+          if (immediate) {
             caption.textContent = raw;
-            caption.classList.remove('is-fading');
-          }, 250);
+          } else {
+            caption.classList.add('is-fading');
+            setTimeout(function () {
+              caption.textContent = raw;
+              caption.classList.remove('is-fading');
+            }, 250);
+          }
         }
         if (captionGroup) {
           var titleRaw = slides[current].getAttribute('data-caption-title') || '';
           var subRaw = slides[current].getAttribute('data-caption-sub') || '';
-          captionGroup.classList.add('is-fading');
-          setTimeout(function () {
+          if (immediate) {
             if (captionTitleEl) captionTitleEl.textContent = titleRaw;
             if (captionSubEl) captionSubEl.textContent = subRaw;
-            captionGroup.classList.remove('is-fading');
-          }, 250);
+          } else {
+            captionGroup.classList.add('is-fading');
+            setTimeout(function () {
+              if (captionTitleEl) captionTitleEl.textContent = titleRaw;
+              if (captionSubEl) captionSubEl.textContent = subRaw;
+              captionGroup.classList.remove('is-fading');
+            }, 250);
+          }
         }
       }
 
@@ -277,6 +286,12 @@
       var dragMoved = false;
       slider.addEventListener('pointerdown', function (e) {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
+        /* Pointer capture below redirects the click that follows onto
+           the slider itself, not whatever was under the cursor — if
+           that's the prev/next zone, its own click listener would never
+           fire. Skip the drag/capture handling entirely for those, so a
+           real mouse click on them reaches their listener normally. */
+        if (e.target.closest('[data-ig-prev], [data-ig-next]')) return;
         dragging = true;
         dragMoved = false;
         dragStartX = e.clientX;
@@ -323,23 +338,33 @@
       if (prevBtn) prevBtn.addEventListener('click', function () { prev(); prevBtn.blur(); });
       if (nextBtn) nextBtn.addEventListener('click', function () { next(); nextBtn.blur(); });
 
-      function start() {
-        render();
-        restart();
-      }
+      /* ============ KEYBOARD NAVIGATION ============ */
+      if (!slider.hasAttribute('tabindex')) slider.setAttribute('tabindex', '0');
+      slider.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+      });
+
+      /* Caption text renders immediately and unconditionally — only the
+         auto-advance timer waits for the slider to actually be visible.
+         Gating the caption itself behind IntersectionObserver left it
+         blank (the photo already shows, from the static HTML's
+         is-active class) until the user scrolled far enough to trigger
+         it, reading as the text "appearing while scrolling". */
+      render(true);
 
       if ('IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-              start();
+              restart();
               observer.disconnect();
             }
           });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.15 });
         observer.observe(slider);
       } else {
-        start();
+        restart();
       }
     });
   }

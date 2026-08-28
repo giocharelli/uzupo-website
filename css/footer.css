@@ -1,7 +1,7 @@
 .footer {
   background: var(--bg);
   border-top: 1px solid var(--divider);
-  padding: clamp(48px, 8vh, 96px) var(--side-padding) 32px;
+  padding: clamp(67px, 11vh, 134px) var(--side-padding) 32px;
 }
 
 .footer__top {

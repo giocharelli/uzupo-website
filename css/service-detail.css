@@ -22,7 +22,7 @@
 .service-hero__content {
   position: relative;
   z-index: 2;
-  padding: 0 var(--side-padding) clamp(64px, 10vh, 120px);
+  padding: 0 var(--side-padding) clamp(90px, 14vh, 168px);
   width: 100%;
 }
 .service-hero__title {

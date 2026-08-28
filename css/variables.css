@@ -7,6 +7,8 @@
   --light:        #CCCCCC;
   --muted:        #888888;
   --amber:        #E8943A;
+  --amber-bright: #FFAA4D;
+  --amber-ink:    #1A1000;
   --divider:      #2A2A2A;
 
   /* Fonts */
@@ -31,7 +33,7 @@
   --tracking-tight: -0.02em;
   --tracking-label: 0.15em;
 
-  /* Spacing */
-  --section-padding: clamp(80px, 12vh, 160px);
+  /* Spacing — section padding bumped 40% for more breathing room */
+  --section-padding: clamp(112px, 17vh, 224px);
   --side-padding:     clamp(24px, 6vw, 120px);
 }

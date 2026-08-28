@@ -1,5 +1,5 @@
 .services-list-section {
-  padding-bottom: clamp(80px, 12vh, 160px);
+  padding-bottom: var(--section-padding);
 }
 
 .service-list__item[href] {
