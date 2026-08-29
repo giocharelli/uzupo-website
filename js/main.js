@@ -227,13 +227,28 @@
         return override ? parseInt(override, 10) : duration;
       }
 
-      function render(immediate) {
-        slides.forEach(function (s, i) { s.classList.toggle('is-active', i === current); });
+      /* Separate from render() below: the dash's CSS progress-bar
+         animation starts the instant its is-active class is applied,
+         but the real JS timer for this slide only starts once
+         checkVisibility below confirms the slider is actually on
+         screen. Updating both together at setup meant the dash could
+         already be partway (or fully) through its own visual countdown
+         by the time a visitor scrolled to it, completely out of sync
+         with when the real timer had barely started — reading as the
+         slider not starting, then hanging. Keeping this on its own
+         lets the two stay aligned: only called at setup once the
+         slider is confirmed visible, and on every real transition. */
+      function updateDash() {
         slider.style.setProperty('--ig-duration', slideDuration() + 'ms');
         dashes.forEach(function (d, i) {
           d.classList.toggle('is-done', i < current);
           d.classList.toggle('is-active', i === current);
         });
+      }
+
+      function render(immediate) {
+        slides.forEach(function (s, i) { s.classList.toggle('is-active', i === current); });
+        if (!immediate) updateDash();
         var raw = slides[current].getAttribute('data-caption') || '';
         if (caption) {
           if (immediate) {
@@ -415,6 +430,7 @@
       function checkVisibility() {
         var rect = slider.getBoundingClientRect();
         if (rect.top < window.innerHeight + 400 && rect.bottom > -400) {
+          updateDash();
           restart();
           window.removeEventListener('scroll', checkVisibility);
           window.removeEventListener('resize', checkVisibility);
