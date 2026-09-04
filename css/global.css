@@ -900,10 +900,11 @@ body.is-loading {
 .festivals__row img[src*="sarajevo-3"] {
   /* sarajevo-3.png has the same opaque dark badge background as
      poff.png, plus its badge mark reads small next to the other
-     festival logos at the shared 60px height, so it runs 2x taller */
+     festival logos at the shared 60px height, so it runs larger —
+     kept modest enough that all four logos still stay on one line */
   filter: none;
   opacity: 1;
-  height: 120px;
+  height: 90px;
 }
 
 /* ============ REDUCED MOTION ============ */
