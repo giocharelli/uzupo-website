@@ -38,7 +38,7 @@
 .work-poster-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 40px 24px;
+  gap: 16px 24px;
   padding: 0 var(--side-padding) var(--section-padding);
 }
 .work-poster-grid .work-card {
@@ -52,7 +52,7 @@
   .work-poster-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 700px) {
-  .work-poster-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+  .work-poster-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }
 @media (max-width: 420px) {
   .work-poster-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
