@@ -95,7 +95,7 @@
       link: 'https://www.facebook.com/reel/1077793354460200'
     },
     'music-credit-1-setanta': {
-      title: 'Setanta Sports — ვასახელოთ საქართველო',
+      title: 'Setanta Sports — Let\'s Make Georgia Proud',
       service: 'Music Writing & Production',
       credit: '',
       festival: '',
@@ -103,7 +103,7 @@
       link: 'https://www.youtube.com/watch?v=YdDh6SiQ_p4'
     },
     'tegeta-womandrives': {
-      title: 'Tegeta — ქალი მართავს',
+      title: 'Tegeta — Woman Drives',
       service: 'Sound Design',
       credit: '',
       festival: '',
@@ -111,7 +111,7 @@
       link: 'https://www.facebook.com/reel/3862287667409905'
     },
     'music-credit-2-bog-gviriloba': {
-      title: 'Bank of Georgia — ქუთაისში სიყვარული უკვე გადაწყვეტილია',
+      title: 'Bank of Georgia — Gviriloba',
       service: 'Sound Design & Music',
       credit: '',
       festival: '',
@@ -119,7 +119,7 @@
       link: 'https://www.facebook.com/reel/926747813522065'
     },
     'tbc-game': {
-      title: 'TBC — ოთხი საგვარეულო და საგანძური',
+      title: 'TBC — Four Families And A Treasure',
       service: 'Sound Design',
       credit: '',
       festival: '',
@@ -127,7 +127,7 @@
       link: 'https://www.facebook.com/reel/1701808861135903'
     },
     'sukh-2': {
-      title: 'Bank of Georgia, Sukhishvilebi — სუხიშვილები',
+      title: 'Bank of Georgia & Sukhishvilebi — A Story That Never Stops',
       service: 'Sound Design',
       credit: '',
       festival: '',
@@ -135,7 +135,7 @@
       link: 'https://www.facebook.com/reel/2435686136917186'
     },
     'music-credit-4-chivas': {
-      title: 'Chivas Regal — ძმობა და გზა წარმატებისკენ',
+      title: 'Chivas Regal — Brotherhood and the Path to Success',
       service: 'Sound Design & Music',
       credit: '',
       festival: '',
@@ -143,7 +143,7 @@
       link: 'https://www.facebook.com/reel/2135161643885308'
     },
     'music-credit-3-wynfl-2': {
-      title: 'WYNFLAIR — 8-დან 8 ქართველი იგივეს იფიქრებდა',
+      title: 'WYNFLAIR — 8 out of 8 Georgians would think the same',
       service: 'Music Composing & Sound Design',
       credit: '',
       festival: '',
@@ -151,7 +151,7 @@
       link: 'https://www.facebook.com/reel/1610726923277406'
     },
     'rkena': {
-      title: 'RKENA — Event 03 Teaser',
+      title: 'RKENA MMA — Event 03',
       service: 'Sound Design',
       credit: '',
       festival: '',
