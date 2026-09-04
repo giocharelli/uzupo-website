@@ -890,9 +890,11 @@ body.is-loading {
   filter: brightness(0) invert(1);
   opacity: 0.7;
 }
-.festivals__row img[src*="poff"] {
-  /* poff.png has an opaque dark background rather than transparency —
-     inverting it would fill the whole frame white instead of just the mark */
+.festivals__row img[src*="poff"],
+.festivals__row img[src*="sarajevo-3"] {
+  /* poff.png and sarajevo-3.png both have an opaque dark badge
+     background rather than transparency — inverting it would turn the
+     whole badge into a solid white blob instead of just the mark */
   filter: none;
   opacity: 1;
 }
