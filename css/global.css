@@ -890,13 +890,20 @@ body.is-loading {
   filter: brightness(0) invert(1);
   opacity: 0.7;
 }
-.festivals__row img[src*="poff"],
-.festivals__row img[src*="sarajevo-3"] {
-  /* poff.png and sarajevo-3.png both have an opaque dark badge
-     background rather than transparency — inverting it would turn the
-     whole badge into a solid white blob instead of just the mark */
+.festivals__row img[src*="poff"] {
+  /* poff.png has an opaque dark badge background rather than
+     transparency — inverting it would turn the whole badge into a
+     solid white blob instead of just the mark */
   filter: none;
   opacity: 1;
+}
+.festivals__row img[src*="sarajevo-3"] {
+  /* sarajevo-3.png has the same opaque dark badge background as
+     poff.png, plus its badge mark reads small next to the other
+     festival logos at the shared 60px height, so it runs 2x taller */
+  filter: none;
+  opacity: 1;
+  height: 120px;
 }
 
 /* ============ REDUCED MOTION ============ */
