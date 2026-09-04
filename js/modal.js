@@ -85,6 +85,78 @@
       credit: 'Directed by Elene Dundua',
       festival: '',
       description: 'Complete audio post, mixed in 5.1 for this short film.'
+    },
+    'bog-christmas-2': {
+      title: 'Bank of Georgia — Christmas',
+      service: 'Sound Design',
+      credit: '',
+      festival: '',
+      description: 'ემიგრანტი დედის და საქართველოში დარჩენილი შვილის ამბავი, რომელიც ათასობით ოჯახს აერთიანებს.',
+      link: 'https://www.facebook.com/reel/1077793354460200'
+    },
+    'music-credit-1-setanta': {
+      title: 'Setanta Sports — ვასახელოთ საქართველო',
+      service: 'Music Writing & Production',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.youtube.com/watch?v=YdDh6SiQ_p4'
+    },
+    'tegeta-womandrives': {
+      title: 'Tegeta — ქალი მართავს',
+      service: 'Sound Design',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.facebook.com/reel/3862287667409905'
+    },
+    'music-credit-2-bog-gviriloba': {
+      title: 'Bank of Georgia — ქუთაისში სიყვარული უკვე გადაწყვეტილია',
+      service: 'Sound Design & Music',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.facebook.com/reel/926747813522065'
+    },
+    'tbc-game': {
+      title: 'TBC — ოთხი საგვარეულო და საგანძური',
+      service: 'Sound Design',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.facebook.com/reel/1701808861135903'
+    },
+    'sukh-2': {
+      title: 'Bank of Georgia, Sukhishvilebi — სუხიშვილები',
+      service: 'Sound Design',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.facebook.com/reel/2435686136917186'
+    },
+    'music-credit-4-chivas': {
+      title: 'Chivas Regal — ძმობა და გზა წარმატებისკენ',
+      service: 'Sound Design & Music',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.facebook.com/reel/2135161643885308'
+    },
+    'music-credit-3-wynfl-2': {
+      title: 'WYNFLAIR — 8-დან 8 ქართველი იგივეს იფიქრებდა',
+      service: 'Music Composing & Sound Design',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.facebook.com/reel/1610726923277406'
+    },
+    'rkena': {
+      title: 'RKENA — Event 03 Teaser',
+      service: 'Sound Design',
+      credit: '',
+      festival: '',
+      description: '',
+      link: 'https://www.instagram.com/reel/DXel0okjJRr/'
     }
   };
 
@@ -98,6 +170,7 @@
     var creditEl = document.getElementById('modal-credit');
     var festivalEl = document.getElementById('modal-festival');
     var descEl = document.getElementById('modal-description');
+    var watchEl = document.getElementById('modal-watch');
     var lastFocused = null;
 
     function open(slug, posterSrc) {
@@ -111,6 +184,14 @@
       creditEl.textContent = data.credit || '';
       festivalEl.textContent = data.festival || '';
       descEl.textContent = data.description || '';
+      if (watchEl) {
+        if (data.link) {
+          watchEl.href = data.link;
+          watchEl.hidden = false;
+        } else {
+          watchEl.hidden = true;
+        }
+      }
       modal.hidden = false;
       requestAnimationFrame(function () { modal.classList.add('is-open'); });
       document.body.style.overflow = 'hidden';

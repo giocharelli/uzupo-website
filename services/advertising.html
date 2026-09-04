@@ -14,12 +14,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/css/reset.css?v=50">
-<link rel="stylesheet" href="/css/variables.css?v=50">
-<link rel="stylesheet" href="/css/global.css?v=50">
-<link rel="stylesheet" href="/css/nav.css?v=50">
-<link rel="stylesheet" href="/css/footer.css?v=50">
-<link rel="stylesheet" href="/css/service-detail.css?v=50">
+<link rel="stylesheet" href="/css/reset.css?v=51">
+<link rel="stylesheet" href="/css/variables.css?v=51">
+<link rel="stylesheet" href="/css/global.css?v=51">
+<link rel="stylesheet" href="/css/nav.css?v=51">
+<link rel="stylesheet" href="/css/footer.css?v=51">
+<link rel="stylesheet" href="/css/service-detail.css?v=51">
 </head>
 <body>
 
@@ -221,7 +221,100 @@
     </div>
   </section>
 
+  <!-- RECENT WORK -->
+  <section class="section section--dark">
+    <div class="container">
+      <span class="label section__label">Recent work</span>
+      <h2 class="heading" data-reveal="lines">
+        <span class="reveal-line"><span class="inner">Campaigns we've sounded for.</span></span>
+      </h2>
+      <div class="recent-work-grid">
+
+        <button type="button" class="work-card" data-project="bog-christmas-2">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/bog-christmas-2.jpg" alt="Bank of Georgia — Christmas" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">Bank of Georgia — Christmas</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="music-credit-1-setanta">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/music-credit-1-setanta.jpg" alt="Setanta Sports — ვასახელოთ საქართველო" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">Setanta Sports — ვასახელოთ საქართველო</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="tegeta-womandrives">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/tegeta-womandrives.jpg" alt="Tegeta — ქალი მართავს" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">Tegeta — ქალი მართავს</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="music-credit-2-bog-gviriloba">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/music-credit-2-bog-gviriloba.jpg" alt="Bank of Georgia — ქუთაისში სიყვარული უკვე გადაწყვეტილია" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">Bank of Georgia — ქუთაისში სიყვარული უკვე გადაწყვეტილია</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="tbc-game">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/tbc-game.jpg" alt="TBC — ოთხი საგვარეულო და საგანძური" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">TBC — ოთხი საგვარეულო და საგანძური</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="sukh-2">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/sukh-2.jpg" alt="Bank of Georgia, Sukhishvilebi — სუხიშვილები" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">Bank of Georgia, Sukhishvilebi — სუხიშვილები</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="music-credit-4-chivas">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/music-credit-4-chivas.jpg" alt="Chivas Regal — ძმობა და გზა წარმატებისკენ" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">Chivas Regal — ძმობა და გზა წარმატებისკენ</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="music-credit-3-wynfl-2">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/music-credit-3-wynfl-2.jpg" alt="WYNFLAIR — 8-დან 8 ქართველი იგივეს იფიქრებდა" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">WYNFLAIR — 8-დან 8 ქართველი იგივეს იფიქრებდა</h3>
+          </div>
+        </button>
+
+        <button type="button" class="work-card" data-project="rkena">
+          <div class="work-card__image img-reveal"><img src="/assets/images/projects/rkena.jpg" alt="RKENA — Event 03 Teaser" loading="lazy"></div>
+          <div class="work-card__info">
+            <h3 class="work-card__title">RKENA — Event 03 Teaser</h3>
+          </div>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
 </main>
+
+<!-- PROJECT MODAL -->
+<div class="modal" id="project-modal" hidden>
+  <div class="modal__backdrop" data-modal-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
+    <div class="modal__poster"><img id="modal-poster" src="" alt=""></div>
+    <div class="modal__info">
+      <span class="label modal__label" id="modal-service"></span>
+      <h3 class="modal__title" id="modal-title"></h3>
+      <p class="modal__credit" id="modal-credit"></p>
+      <p class="modal__festival" id="modal-festival"></p>
+      <p class="modal__description" id="modal-description"></p>
+      <a id="modal-watch" href="#" target="_blank" rel="noopener" class="amber-link modal__watch" hidden>Watch <span class="arrow">→</span></a>
+    </div>
+  </div>
+</div>
 
 <footer class="footer">
   <div class="footer__top">
@@ -250,7 +343,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-<script src="/js/main.js?v=50"></script>
-<script src="/js/animations.js?v=50"></script>
+<script src="/js/main.js?v=51"></script>
+<script src="/js/animations.js?v=51"></script>
+<script src="/js/modal.js?v=51"></script>
 </body>
 </html>

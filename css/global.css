@@ -534,6 +534,23 @@ body.is-loading {
   text-transform: uppercase;
 }
 
+/* ============ RECENT WORK GRID (service pages) ============ */
+.recent-work-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px 24px;
+  margin-top: 48px;
+}
+@media (max-width: 1100px) {
+  .recent-work-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+  .recent-work-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+}
+@media (max-width: 420px) {
+  .recent-work-grid { grid-template-columns: 1fr; max-width: 320px; margin: 48px auto 0; }
+}
+
 /* ============ PROJECT MODAL ============ */
 .modal {
   position: fixed;
@@ -625,6 +642,15 @@ body.is-loading {
   color: var(--light);
   font-size: var(--size-body);
   line-height: var(--leading-body);
+}
+.modal__description:empty {
+  display: none;
+}
+.modal__watch {
+  margin-top: 20px;
+}
+.modal__watch[hidden] {
+  display: none;
 }
 .modal__close {
   position: absolute;
